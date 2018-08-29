@@ -6,6 +6,7 @@
 // Dependencies
 var fs = require('fs');
 var path = require('path');
+var stringDecoder = require('string-decoder').StringDecoder
 
 // Container for module (to be exported)
 var lib = {};
@@ -45,7 +46,10 @@ lib.create = function(dir,file,data,callback){
 // Read data from a file
 lib.read = function(dir,file,callback){
   fs.readFile(lib.baseDir+dir+'/'+file+'.json', 'utf8', function(err,data){
-    callback(err,data);
+        var decoder = new stringDecoder("utf-8");
+        var buffer = ''
+        buffer+=decoder.write(data)
+        callback(err,buffer+=decoder.end());
   });
 };
 
